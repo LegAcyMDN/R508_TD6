@@ -1,3 +1,4 @@
+using App.Mapper;
 using App.Models;
 using App.Models.EntityFramework;
 using App.Models.Repository;
@@ -35,6 +36,9 @@ public class Program
             cfg.AddProfile<App.Mapper.TypeProductUpdateMapper>();
             // Add any other individual mapper profiles here
         });
+
+        // Better, c'est unique pour les code et pour les tests
+        //builder.Services.AddSingleton<IMapper>(AppMapperProfile.Create());
 
 
         var app = builder.Build();
