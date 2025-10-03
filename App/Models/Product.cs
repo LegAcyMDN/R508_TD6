@@ -33,6 +33,11 @@ public partial class Product
     [MaxLength(512)]
     public string? PhotoUri { get; set; } = null;
 
+    [Column("productPrice")]
+    [Range(0, 9999.99)]
+    [Required]
+    public decimal ProductPrice { get; set; }
+
     [Column("idTypeProduct")]
     public int? IdTypeProduct { get; set; } = null;
 
