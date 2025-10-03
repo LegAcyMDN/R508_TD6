@@ -1,0 +1,47 @@
+﻿@page "/brands"
+@using Models
+@using Service
+@inject IService<Brand> dataRepository
+
+<h1>Liste des marques</h1>
+
+@if (brandList == null)
+{
+    <p><em>Chargement...</em></p>
+}
+else if (!brandList.Any())
+{
+    <p>Aucune marque trouvée.</p>
+}
+else
+{
+    <table class="table" id="brandTable">
+        <thead>
+            <tr>
+                <th>NomMarque</th>
+            </tr>
+        </thead>
+            <NavLink class="btn btn-primary" href="@($"/brandAdd")">Ajouter une marque</NavLink>
+        <tbody>
+            @foreach (var brand in brandList)
+            {
+                <tr class="brandRow">
+                    <td class="brandName">@brand.Name</td>
+                    <td>
+                        <NavLink class="btn btn-link" href="@($"/brandEdit/{brand.Id}")">Supprimer / Modifier marque</NavLink>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Brand>? brandList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        brandList = await dataRepository.GetAllAsync() ?? new List<Brand>();
+    }
+}

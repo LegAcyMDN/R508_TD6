@@ -1,0 +1,57 @@
+﻿@page "/products"
+@using Models
+@using Service
+@inject IService<Product> dataRepository
+
+<h1>Liste des produits</h1>
+
+@if (productList == null)
+{
+    <p><em>Chargement...</em></p>
+}
+else if (!productList.Any())
+{
+    <p>Aucun produit trouvé.</p>
+}
+else
+{
+    <table class="table" id="productTable">
+        <thead>
+            <tr>
+                <th>NomProduit</th>
+                <th>Marque</th>
+                <th>Type</th>
+                <th>Détails</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <NavLink class="btn btn-primary" href="@($"/productAdd")">Ajouter un produit</NavLink>
+
+        <tbody>
+            @foreach (var product in productList)
+            {
+                <tr class="productRow">
+                    <td class="productName">@product.Name</td>
+                    <td class="productBrand">@product.Brand</td>
+                    <td class="productType">@product.Type</td>
+                    <td>
+                        <NavLink class="btn btn-link" href="@($"/ProductDetail/{product.Id}")">Voir détails</NavLink>
+                    </td>
+                    <td>
+                        <NavLink class="btn btn-link" href="@($"/productEdit/{product.Id}")">Supprimer / modifier produit</NavLink>
+                    </td>
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Product>? productList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        productList = await dataRepository.GetAllAsync() ?? new List<Product>();
+    }
+}
